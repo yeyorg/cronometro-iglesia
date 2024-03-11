@@ -4,12 +4,11 @@ import { TEXT_COLOR, TIMEOUT_PATH_COLOR } from "./logic/const.js";
 import { useState, useEffect } from "react";
 import { PauseIcon, PlayIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { Modal } from "./components/Modal.jsx";
-
+let previousTick;
 export function App() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [progressBarPercentage, setProgressBarPercentage] = useState(0);
-  const [previousTick, setPreviousTick] = useState(null);
   const [totalSeconds, setTotalSeconds] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
   const [isModalOn, setModalOn] = useState(false);
@@ -17,8 +16,8 @@ export function App() {
   // updating seconds and minutes
   const tick = () => {
     return setTimeout(() => {
-      if (seconds >= 59) {
-        setSeconds(0);
+      if (seconds < 1) {
+        setSeconds(59);
         setMinutes(minutes - 1);
       } else {
         setSeconds(seconds - 1);
@@ -28,7 +27,7 @@ export function App() {
       setProgressBarPercentage(
         Math.floor((100 * (seconds + minutes * 60)) / totalSeconds)
       );
-    }, 1000);
+    }, 100);
   };
 
   const resetTimmer = () => {
@@ -49,8 +48,8 @@ export function App() {
         ? 0
         : Math.floor((endTime - Date.now()) / 1000) - minutesLeft * 60;
 
-    const play = !(seconds === 0 && minutes === 0);
-
+    const play = secondsLeft === 0 && minutesLeft === 0;
+    console.log(play);
     setTotalSeconds(secondsLeft + minutesLeft * 60);
     setProgressBarPercentage(100);
     setMinutes(minutesLeft);
@@ -61,7 +60,7 @@ export function App() {
 
   // Tick when is not paused
   useEffect(() => {
-    !isPaused ? setPreviousTick(tick()) : clearTimeout(previousTick);
+    !isPaused ? (previousTick = tick()) : clearTimeout(previousTick);
   }, [isPaused, seconds]);
 
   // * Render de la APP
