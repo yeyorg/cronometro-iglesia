@@ -35,9 +35,11 @@ export function App() {
     setMinutes(0);
     setIsPaused(true);
     setProgressBarPercentage(0);
+    clearTimeout(previousTick);
   };
 
   const initTimer = (endTime) => {
+    resetTimmer();
     const minutesLeft =
       Math.floor((endTime - Date.now()) / 1000 / 60) < 0
         ? 0
