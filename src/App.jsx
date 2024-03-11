@@ -27,7 +27,7 @@ export function App() {
       setProgressBarPercentage(
         Math.floor((100 * (seconds + minutes * 60)) / totalSeconds)
       );
-    }, 100);
+    }, 1000);
   };
 
   const resetTimmer = () => {
