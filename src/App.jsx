@@ -49,7 +49,6 @@ export function App() {
         : Math.floor((endTime - Date.now()) / 1000) - minutesLeft * 60;
 
     const play = secondsLeft === 0 && minutesLeft === 0;
-    console.log(play);
     setTotalSeconds(secondsLeft + minutesLeft * 60);
     setProgressBarPercentage(100);
     setMinutes(minutesLeft);
